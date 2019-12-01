@@ -1,0 +1,43 @@
+// ==UserScript==
+// @name         GA Bar API
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.gabar.org/?*
+// @grant        none
+// ==/UserScript==
+
+function post(path, params, method='post') {
+  const form = document.createElement('form');
+  form.method = method;
+  form.action = path;
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = key;
+      hiddenField.value = params[key];
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function main() {
+    post('/membersearchresults.cfm', getUrlVars());
+}
+
+main()
+
